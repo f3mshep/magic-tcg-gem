@@ -8,6 +8,13 @@ describe "Scraper" do
     end
   end
 
+  describe "#query" do
+    it "Gets and sets the query attribute" do
+      Card.instance_methods.include? :query
+      Card.instance_methods.include? :query=
+    end 
+  end
+
   describe "#input_parser" do
     it "returns a correctly formatted search URL" do
       card = Scraper.new("Gaea's Cradle")
