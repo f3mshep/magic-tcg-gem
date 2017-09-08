@@ -12,11 +12,15 @@ class Card
     @@all
   end
 
+  def self.destroy_all
+    @@all = []
+  end
+
   def self.create_from_collection()
 
   end
 
-  def card_attributes()
+  def self.card_attributes()
     
   end
 
