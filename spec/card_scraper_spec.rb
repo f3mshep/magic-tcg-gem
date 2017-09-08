@@ -18,7 +18,7 @@ describe "Scraper" do
   describe "#input_parser" do
     it "returns a correctly formatted search URL" do
       card = Scraper.new("Gaea's Cradle")
-      expect{Scraper.input_parser}.to eq("http://shop.tcgplayer.com/magic/product/show?ProductName=gaeas+cradle")
+      (card.input_parser).should include("http://shop.tcgplayer.com/magic/product/show?ProductName=gaeas+cradle")
     end
   end
 
