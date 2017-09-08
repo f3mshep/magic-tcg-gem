@@ -17,7 +17,7 @@ describe "Scraper" do
 
   describe "#input_parser" do
     it "returns a correctly formatted search URL" do
-      card = Scraper.new("Gaea's Cradle")
+       card = Scraper.new("Gaea's Cradle")
       (card.input_parser).should include("http://shop.tcgplayer.com/magic/product/show?ProductName=gaeas+cradle")
     end
   end
@@ -28,7 +28,9 @@ describe "Scraper" do
     # end
     #How to implement this?
     it "calls the input parser method" do
-      expect().to receive(:bar)
+      card = Scraper.new("Gaea's Cradle")
+      expect(card).to receive(:input_parser)
+      card.scrape_search_page
     end
     it " returns an array with a  hash with the card name, set, rarity, and URL as keys with their appropriate values" do 
       card = Scraper.new("Riptide Replicator")

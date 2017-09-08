@@ -12,7 +12,8 @@ class Scraper
   	@query = query
   end
 
-  def self.scrape_search_page(index_url)
+  def scrape_search_page
+  	url =  self.input_parser
 
   end
 
