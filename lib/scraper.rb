@@ -43,14 +43,14 @@ class Scraper
 
   def color_finder(cost)
 
-    colors = ['{W}','{U}','{B}','{R}','{G}']
+    colors = {'{W}' =>'White','{U}' => 'Blue','{B}' => 'Black','{R}' => 'Red','{G}' => 'Green'}
     matches = 0
     color_identity = "Colorless"
 
-    colors.each do |color|
+    colors.each do |symbol, value|
       if cost.include?(color)
         matches += 1
-        color_identity = color
+        color_identity = value
       end
     end
 
@@ -59,11 +59,8 @@ class Scraper
     else
       color_identity
     end
-
-      
-    end
-
-    #still need gold cards to work
+    binding.pry
+    #still need multicolor cards to work
     # case 
     # when cost.include?('{W}')
     #   "White"
@@ -98,6 +95,7 @@ class Scraper
     card_hash[:card_text] = card_profile.css('div.card-text-oracle').text.strip
     card_hash[:flavor_text] = card_profile.css('div.card-text-flavor').text.strip
     card_hash
+    binding.pry
   end
 
 end
