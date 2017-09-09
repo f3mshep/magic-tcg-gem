@@ -41,10 +41,22 @@ class Scraper
   	SEARCH_URL + input
   end
 
+
   def scrape_card_page(profile_url)
     card_profile = Nokogiri::HTML(open(profile_url))
-    card_text = card_profile.css('div.card-text-oracle').text.strip
     binding.pry
+    name_text = 
+    rarity = 
+    sets = card_profile.css('tbody tr').collect {|element|element.css.(td).first.text.strip}
+    price = 
+    color = 
+    cost = 
+    purchase_url = 
+    creature_stats =
+    combat_stats = 
+    card_text = card_profile.css('div.card-text-oracle').text.strip
+    flavor_text = card_profile.css('div.card-text-flavor').text.strip
+
   end
 
 end
