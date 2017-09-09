@@ -42,21 +42,42 @@ class Scraper
   end
 
   def color_finder(cost)
-    #still need gold cards to work
-    case 
-    when cost.include?('{W}')
-      "White"
-    when cost.include?('{U}')
-      "Blue"
-    when cost.include?('{B}')
-      "Black"
-    when cost.include?('{R}')
-      "Red"
-    when cost.include?('{G}')
-      "Green"
-    else
-      "Colorless"
+
+    colors = ['{W}','{U}','{B}','{R}','{G}']
+    matches = 0
+    color_identity = "Colorless"
+
+    colors.each do |color|
+      if cost.include?(color)
+        matches += 1
+        color_identity = color
+      end
     end
+
+    if matches > 1
+      "Multicolor"
+    else
+      color_identity
+    end
+
+      
+    end
+
+    #still need gold cards to work
+    # case 
+    # when cost.include?('{W}')
+    #   "White"
+    # when cost.include?('{U}')
+    #   "Blue"
+    # when cost.include?('{B}')
+    #   "Black"
+    # when cost.include?('{R}')
+    #   "Red"
+    # when cost.include?('{G}')
+    #   "Green"
+    # else
+    #   "Colorless"
+    # end
   end
 
 ## output.match(/^.*(?=(\n))/)
