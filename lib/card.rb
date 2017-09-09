@@ -1,6 +1,6 @@
 class Card
 
-  attr_accessor :name, :rarity, :set, :price, :rules_text
+  attr_accessor :name, :rarity, :sets, :price, :rules_text, :flavor_text, :color, :cost, :purchase_url, :creature_stats, :combat_stats
 
   @@all = []
 

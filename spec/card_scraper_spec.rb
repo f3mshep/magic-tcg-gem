@@ -33,10 +33,10 @@ describe "Scraper" do
       card.scrape_search_page
     end
     it " returns an array with a  hash with the card name and URL as keys with their appropriate values" do 
-      card = Scraper.new("Riptide Replicator")
+      card = Scraper.new("Merfolk")
       card_array = card.scrape_search_page
       expect(card_array).to be_an_instance_of(Array)
-      card_array.should include({name: "Riptide Replicator", url: 'https://scryfall.com/search?q=riptide+replicator'})
+      card_array.should include({name: "Arctic Merfolk", url: 'https://scryfall.com/card/pls/21'})
     end
     
   end
@@ -46,7 +46,7 @@ describe "Scraper" do
       card = Scraper.new("Merfolk Looter")
       expect(card.scrape_card_page("http://shop.tcgplayer.com/magic/magic-2012-m12/merfolk-looter")).to_not raise_error
     end
-    it "is a method that scrapes the card page from TCG player and returns a hash with the rules and price" do
+    it "is a method that scrapes the card page from TCG player and returns a hash with the rules, flavor text, cost,  ect." do
       card = Scraper.new("Merfolk Looter")
       (card.scrape_card_page("http://shop.tcgplayer.com/magic/magic-2012-m12/merfolk-looter")).should include(rules_text: "T: Draw a card, then discard a card.", price: "$0.06")
     end
