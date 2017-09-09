@@ -48,18 +48,19 @@ class Scraper
     color_identity = "Colorless"
 
     colors.each do |symbol, value|
-      if cost.include?(color)
+      if cost.include?(symbol)
         matches += 1
         color_identity = value
       end
     end
+
+    binding.pry
 
     if matches > 1
       "Multicolor"
     else
       color_identity
     end
-    binding.pry
     #still need multicolor cards to work
     # case 
     # when cost.include?('{W}')
