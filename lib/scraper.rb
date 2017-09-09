@@ -21,12 +21,14 @@ class Scraper
   	if cards.empty?
 
   	else
-  		card_hash = {}
   		###card url = card.css(card['href'])
   		###card name =  card.css('img.card').attr('alt').text
+  		card_collection = []
   		cards.each do |card|
-  			card_hash[:name] = card['href']
-  			card_hash[:url] = card.css('img.card').attr('alt').text
+  			card_hash = {}
+  			card_hash[:name] = card.css('img.card').attr('alt').text
+  			card_hash[:url] = "https://scryfall.com" + card['href']
+  			card_collection << card_hash
   		end
   		binding.pry
   	end
