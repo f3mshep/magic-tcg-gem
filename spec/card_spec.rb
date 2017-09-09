@@ -32,11 +32,12 @@ describe "Card" do
     end
   end
 
-  describe "#set" do 
+  describe "#sets" do 
     it "Gets and sets the set attribute" do
       Card.instance_methods.include? :set
       Card.instance_methods.include? :set=
     end
+    it "Returns an array of all sets the card is in"
   end 
 
   describe "#price" do

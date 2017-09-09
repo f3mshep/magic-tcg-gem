@@ -4,7 +4,7 @@ require 'pry'
 
 class Scraper
 
-  SEARCH_URL = "http://shop.tcgplayer.com/magic/product/show?ProductName="
+  SEARCH_URL = "https://scryfall.com/search?q="
 
   attr_accessor :query
 
@@ -14,7 +14,9 @@ class Scraper
 
   def scrape_search_page
   	url =  self.input_parser
-
+  	card_index = Nokogiri::HTML(open(url))
+  	binding.pry
+  	card_index.css()
   end
 
   def input_parser

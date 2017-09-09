@@ -18,7 +18,7 @@ describe "Scraper" do
   describe "#input_parser" do
     it "returns a correctly formatted search URL" do
        card = Scraper.new("Gaea's Cradle")
-      (card.input_parser).should include("http://shop.tcgplayer.com/magic/product/show?ProductName=gaeas+cradle")
+      (card.input_parser).should include("https://scryfall.com/search?q=riptide+replicator=gaeas+cradle")
     end
   end
 
@@ -32,11 +32,11 @@ describe "Scraper" do
       expect(card).to receive(:input_parser)
       card.scrape_search_page
     end
-    it " returns an array with a  hash with the card name, set, rarity, and URL as keys with their appropriate values" do 
+    it " returns an array with a  hash with the card name and URL as keys with their appropriate values" do 
       card = Scraper.new("Riptide Replicator")
       card_array = card.scrape_search_page
       expect(card_array).to be_an_instance_of(Array)
-      card_array.should include({name: "Riptide Replicator", set: "Onslaught", rarity: "Rare"})
+      card_array.should include({name: "Riptide Replicator", url: 'https://scryfall.com/search?q=riptide+replicator'})
     end
     
   end
