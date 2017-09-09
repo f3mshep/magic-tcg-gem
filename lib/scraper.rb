@@ -15,7 +15,6 @@ class Scraper
   def scrape_search_page
   	url =  self.input_parser
   	card_index = Nokogiri::HTML(open(url))
-
   	### if the following selctor returns a blank array 
   	cards = card_index.css('a.card-grid-item')
   	if cards.empty?
@@ -29,6 +28,7 @@ class Scraper
   			card_hash[:name] = card.css('img.card').attr('alt').text
   			card_hash[:url] = "https://scryfall.com" + card['href']
   			card_collection << card_hash
+        card_collection
   		end
   	end
   	### do this instead
@@ -41,22 +41,42 @@ class Scraper
   	SEARCH_URL + input
   end
 
+  def color_finder(cost)
+    #still need gold cards to work
+    case 
+    when cost.include?('{W}')
+      "White"
+    when cost.include?('{U}')
+      "Blue"
+    when cost.include?('{B}')
+      "Black"
+    when cost.include?('{R}')
+      "Red"
+    when cost.include?('{G}')
+      "Green"
+    else
+      "Colorless"
+    end
+  end
 
+## output.match(/^.*(?=(\n))/)
+#main > div.card-profile > div > div.card-text > p.card-text-type-line
   def scrape_card_page(profile_url)
+    card_hash = {}
     card_profile = Nokogiri::HTML(open(profile_url))
-    binding.pry
-    name_text = 
-    rarity = 
-    sets = card_profile.css('tbody tr').collect {|element|element.css.(td).first.text.strip}
-    price = 
-    color = 
-    cost = 
-    purchase_url = 
-    creature_stats =
-    combat_stats = 
-    card_text = card_profile.css('div.card-text-oracle').text.strip
-    flavor_text = card_profile.css('div.card-text-flavor').text.strip
-
+    title_text = card_profile.css('h1.card-text-title').text.strip.gsub(/\n/, ',').split(",")
+    card_hash[:name] = title_text.first
+    card_hash[:cost] = title_text[1].gsub(/\s/,"")
+    card_hash[:rarity] = card_profile.css('span.prints-current-set-details').text.strip.split(', ')[1]
+    card_hash[:sets] = card_profile.css('tbody tr').collect {|element|element.css('td').text.strip[/^.*(?=(\n))/]}.delete_if{|element|element.nil?}
+    card_hash[:price] = card_profile.css('span.price.currency-usd').text.split('$')[1]
+    card_hash[:color] = color_finder(card_hash[:cost])
+    card_hash[:purchase_url] = card_profile.css('#stores > ul > li:nth-child(1) > a').attr('href').text
+    card_hash[:card_type] = card_profile.css('p.card-text-type-line').text.strip
+    card_hash[:combat_stats] = card_profile.css('div.card-text-stats').text.strip
+    card_hash[:card_text] = card_profile.css('div.card-text-oracle').text.strip
+    card_hash[:flavor_text] = card_profile.css('div.card-text-flavor').text.strip
+    card_hash
   end
 
 end

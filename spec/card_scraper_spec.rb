@@ -48,7 +48,7 @@ describe "Scraper" do
     end
     it "is a method that scrapes the card page from TCG player and returns a hash with the rules, flavor text, cost,  ect." do
       card = Scraper.new("Merfolk Looter")
-      (card.scrape_card_page("https://scryfall.com/card/cn2/114")).should include(rules_text: "T: Draw a card, then discard a card.", price: "$0.06")
+      (card.scrape_card_page("https://scryfall.com/card/cn2/114")).should include(rules_text: "{T}: Draw a card, then discard a card.", name: "Merfolk Looter", color: "Blue")
     end
   end
 
