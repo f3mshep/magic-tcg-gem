@@ -18,7 +18,7 @@ describe "Scraper" do
   describe "#input_parser" do
     it "returns a correctly formatted search URL" do
        card = Scraper.new("Gaea's Cradle")
-      (card.input_parser).should include("https://scryfall.com/search?q=riptide+replicator=gaeas+cradle")
+      (card.input_parser).should include("https://scryfall.com/search?q=gaeas+cradle")
     end
   end
 
@@ -44,11 +44,11 @@ describe "Scraper" do
   describe "#scrape_card_page" do
     it "accepts the URL of a card page as a parameter" do
       card = Scraper.new("Merfolk Looter")
-      expect(card.scrape_card_page("http://shop.tcgplayer.com/magic/magic-2012-m12/merfolk-looter")).to_not raise_error
+      expect(card.scrape_card_page("https://scryfall.com/card/cn2/114")).to_not raise_error
     end
     it "is a method that scrapes the card page from TCG player and returns a hash with the rules, flavor text, cost,  ect." do
       card = Scraper.new("Merfolk Looter")
-      (card.scrape_card_page("http://shop.tcgplayer.com/magic/magic-2012-m12/merfolk-looter")).should include(rules_text: "T: Draw a card, then discard a card.", price: "$0.06")
+      (card.scrape_card_page("https://scryfall.com/card/cn2/114")).should include(rules_text: "T: Draw a card, then discard a card.", price: "$0.06")
     end
   end
 

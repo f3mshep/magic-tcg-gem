@@ -19,7 +19,7 @@ class Scraper
   	### if the following selctor returns a blank array 
   	cards = card_index.css('a.card-grid-item')
   	if cards.empty?
-
+  		[{name: 'placeholder', url: url}]
   	else
   		###card url = card.css(card['href'])
   		###card name =  card.css('img.card').attr('alt').text
@@ -30,7 +30,6 @@ class Scraper
   			card_hash[:url] = "https://scryfall.com" + card['href']
   			card_collection << card_hash
   		end
-  		binding.pry
   	end
   	### do this instead
 
@@ -42,8 +41,10 @@ class Scraper
   	SEARCH_URL + input
   end
 
-  def self.scrape_card_page(profile_url)
-
+  def scrape_card_page(profile_url)
+    card_profile = Nokogiri::HTML(open(profile_url))
+    card_text = card_profile.css('div.card-text-oracle').text.strip
+    binding.pry
   end
 
 end
