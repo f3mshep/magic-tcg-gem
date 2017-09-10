@@ -14,7 +14,13 @@ class Scraper
 
   def scrape_search_page
   	url =  self.input_parser
-  	card_index = Nokogiri::HTML(open(url))
+    begin 
+  	 card_index = Nokogiri::HTML(open(url))
+    rescue
+      puts "No cards found"
+      return []
+    end
+ 
   	### if the following selctor returns a blank array 
   	cards = card_index.css('a.card-grid-item')
   	if cards.empty?

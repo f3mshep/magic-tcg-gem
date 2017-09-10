@@ -31,14 +31,15 @@ class CommandLine
 	end
 
 	def get_query
-		puts "Please enter the name of a card you want to find:"
+		puts "Please enter the name of a card you want to find"
 		gets.strip
 	end
 
 	def call_scraper(input)
+		card_arr = []
 		new_search = Scraper.new(input)
 		results = new_search.scrape_search_page
-		card_arr = []
+		return card_arr if results == []
 		results.each do |card_hash|
 			card_hash.each do |key, value|
 				if key == :url
@@ -61,12 +62,15 @@ class CommandLine
 	end
 
 	def access_list
+		max = Card.all.size + 1
 		puts "Please make a selection"
 		input = gets.strip.to_i - 1
-		if input < 0 || input > Card.all.size
+		if input < 0 || input > max
 			puts "Invalid selection"
 			access_list
 		end
+		puts "#{max}. New search "
+		run if input == max.to_s
 		input
 	end
 
@@ -88,11 +92,15 @@ class CommandLine
 	def interaction
 		puts "Please make a selection"
 		puts "1. Return to card list"
-		puts "2. Exit"
+		puts "2. New search"
+		puts "3. Exit"
 		input = gets.strip.downcase
-		if input == "1"
+		case input
+		when "1"
 			card_menu
-		elsif input == "2"
+		when "2"
+			run 
+		when "3"
 			clear_screen
 			exit
 		else
@@ -102,11 +110,34 @@ class CommandLine
 			
 	end
 
+	def try_again
+			puts ""
+			puts "Please make a selection:"
+			puts "1. Search for a new card"
+			puts "2. Exit this program"
+			input = gets.strip
+
+			case input
+			when "1"
+				run
+			when "2"
+				clear_screen
+				exit
+			else
+				"Please enter a valid selection"
+				try_again
+			end
+	end
+
 	def run
 		Card.destroy_all
 		query = get_query
 		clear_screen
 		card_arr = call_scraper(query)
+		if card_arr == []
+			puts "No results found"
+			try_again
+		end
 		create_cards(card_arr)
 		card_menu
 		interaction
