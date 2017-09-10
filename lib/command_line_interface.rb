@@ -7,8 +7,12 @@ class CommandLine
 
 	CARD_ATTRIBUTES = [:name, :rarity, :sets, :price, :rules_text, :flavor_text, :color, :cost, :purchase_url, :card_type, :combat_stats]
 
-	def start_screen
+	def clear_screen
+		print %x{clear}
+	end
 
+	def start_screen
+		clear_screen
 		puts "		    _            _____ _              ___      _   _               _             ".colorize(:light_green)
 		puts "  /\\/\\   __ _  __ _(_) ___   _  /__   \\ |__   ___    / _ \\__ _| |_| |__   ___ _ __(_)_ __   __ _ ".colorize(:light_green)
 		puts " /    \\ / _` |/ _` | |/ __| (_)   / /\\/ '_ \\ / _ \\  / /_\\/ _` | __| '_ \\ / _ \\ '__| | '_ \\ / _` |".colorize(:light_green)
@@ -50,6 +54,7 @@ class CommandLine
 	end
 
 	def list_cards
+		clear_screen
 		Card.all.each_with_index do |card, index|
 			puts "#{index + 1}.#{card.name}" 
 		end
@@ -72,18 +77,39 @@ class CommandLine
 		end
 	end
 
+	def card_menu
+		list_cards
+		input = access_list
+		clear_screen
+		load_card(input)
+		interaction
+	end
+
+	def interaction
+		puts "Please make a selection"
+		puts "1. Return to card list"
+		puts "2. Exit"
+		input = gets.strip.downcase
+		if input == "1"
+			card_menu
+		elsif input == "2"
+			clear_screen
+			exit
+		else
+			puts "Invalid selection"
+			interaction
+		end
+			
+	end
+
 	def run
 		Card.destroy_all
 		query = get_query
+		clear_screen
 		card_arr = call_scraper(query)
 		create_cards(card_arr)
-		list_cards
-		input = access_list
-		load_card(input)
-		puts "Would you like to view another card? Y/N"
-		input = gets.strip.downcase
-		run if input == "y"
-		exit
+		card_menu
+		interaction
 	end
 
 
