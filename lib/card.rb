@@ -23,9 +23,5 @@ class Card
     end
   end
 
-  def card_attributes(card_attr)
-    card_attr.each {|method, trait| self.send(("#{method}="), trait)}
-  end
-
 end
 

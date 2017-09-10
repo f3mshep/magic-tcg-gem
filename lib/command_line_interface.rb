@@ -5,8 +5,7 @@ require 'colorize'
 
 class CommandLine
 
-	CARD_ATTRIBUTES = [:name, :rarity, :sets, :price, :rules_text, :flavor_text, :color, :cost, :purchase_url, :card_type, :combat_stats]
-
+	
 	def clear_screen
 		print %x{clear}
 	end
@@ -119,10 +118,6 @@ class CommandLine
 		puts "Average price: #{chosen_card.price}" unless chosen_card.price.nil? 
 		puts "Purchase at #{chosen_card.purchase_url}"
 		puts ""
-
-		# CARD_ATTRIBUTES.each do |attr, value|
-		# 	puts chosen_card.send("#{attr}")
-		# end
 	end
 
 	def card_menu

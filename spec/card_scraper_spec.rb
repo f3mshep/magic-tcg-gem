@@ -23,15 +23,6 @@ describe "Scraper" do
   end
 
   describe "#scrape_search_page" do
-    # it "is a method that scrapes the search page of TCGPlayer" do
-
-    # end
-    #How to implement this?
-    # it "calls the input parser method" do
-    #   card = Scraper.new("Gaea's Cradle")
-    #   expect(card).to receive{:input_parser}
-    #   card.scrape_search_page
-    # end
     it " returns an array with a  hash with the card name and URL as keys with their appropriate values" do 
       card = Scraper.new("Merfolk")
       card_array = card.scrape_search_page

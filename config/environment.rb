@@ -1,6 +1,5 @@
 require 'open-uri'
 require 'nokogiri'
-require 'pry'
 require 'colorize'
 
 require_relative "../lib/command_line_interface.rb"
