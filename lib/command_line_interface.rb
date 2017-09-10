@@ -72,6 +72,7 @@ class CommandLine
 	end
 
 	def colorize_cost(cost)
+		return cost if cost.nil?
 		cost = cost.gsub(/\{W\}/) { |match| match.colorize(:light_yellow) }
 		cost = cost.gsub(/\{U\}/) { |match| match.colorize(:light_cyan) }
 		cost = cost.gsub(/\{B\}/) { |match| match.colorize(:magenta) }
@@ -115,7 +116,7 @@ class CommandLine
 		puts ""
 		puts "Appears in the following set(s): #{chosen_card.sets.join(', ')}" 
 		puts ""
-		puts "Average price: #{chosen_card.price}" unless chosen_card.price.nil? 
+		puts "Average price: $#{chosen_card.price}" unless chosen_card.price.nil? 
 		puts "Purchase at #{chosen_card.purchase_url}"
 		puts ""
 	end

@@ -48,10 +48,11 @@ class Scraper
   end
 
   def color_finder(cost)
-
     colors = {'{W}' =>'White','{U}' => 'Blue','{B}' => 'Black','{R}' => 'Red','{G}' => 'Green'}
     matches = 0
     color_identity = "Colorless"
+    #Not all cards have a casting cost
+    return color_identity if cost.nil?
 
     colors.each do |symbol, value|
       if cost.include?(symbol)
@@ -68,14 +69,14 @@ class Scraper
     end
   end
 
-## output.match(/^.*(?=(\n))/)
-#main > div.card-profile > div > div.card-text > p.card-text-type-line
+
   def scrape_card_page(profile_url)
     card_hash = {}
     card_profile = Nokogiri::HTML(open(profile_url))
     title_text = card_profile.css('h1.card-text-title').text.strip.gsub(/\n/, '||').split("||")
     card_hash[:name] = title_text.first
-    card_hash[:cost] = title_text[1].gsub(/\s/,"")
+    #Not all cards have a casting cost, such as a land... .gsub on nil makes ruby sad.
+    card_hash[:cost] = title_text[1].gsub(/\s/,"") unless title_text[1] == nil
     card_hash[:rarity] = card_profile.css('span.prints-current-set-details').text.strip.split(', ')[1]
     card_hash[:sets] = card_profile.css('tbody tr').collect {|element|element.css('td').text.strip[/^.*(?=(\n))/]}.delete_if{|element|element.nil?}
     card_hash[:price] = card_profile.css('span.price.currency-usd').text.split('$')[1]
