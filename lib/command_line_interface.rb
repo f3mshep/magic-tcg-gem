@@ -57,7 +57,7 @@ class CommandLine
 	def list_cards
 		clear_screen
 		Card.all.each_with_index do |card, index|
-			puts "#{index + 1}.#{card.name}" 
+			puts "#{index + 1}.#{colorize_name(card)}" 
 		end
 	end
 
@@ -73,32 +73,52 @@ class CommandLine
 	end
 
 	def colorize_cost(cost)
-		cost = cost.gsub(/{W}/) { |match| match.colorize(:light_yellow) }
-		cost = cost.gsub(/{U}/) { |match| match.colorize(:light_blue) }
-		cost = cost.gsub(/{B}/) { |match| match.colorize(:blue) }
-		cost = cost.gsub(/{R}/) { |match| match.colorize(:red) }
+		cost = cost.gsub(/\{W\}/) { |match| match.colorize(:light_yellow) }
+		cost = cost.gsub(/\{U\}/) { |match| match.colorize(:light_cyan) }
+		cost = cost.gsub(/\{B\}/) { |match| match.colorize(:magenta) }
+		cost = cost.gsub(/\{R\}/) { |match| match.colorize(:red) }
 		cost = cost.gsub(/\{G\}/) { |match| match.colorize(:green) }
+		cost = cost.gsub(/\{T\}/) { |match| match.colorize(:light_black) }
 		cost = cost.gsub(/\{\d\}/) { |match| match.colorize(:light_black) }
 	end
 
-	def colorize_name(cost)
+	def colorize_name(card)
+		color = card.color
+
+		case color
+		when "White"
+			card.name.colorize(:light_yellow)
+		when "Blue"
+			card.name.colorize(:light_cyan)
+		when "Black"
+			card.name.colorize(:magenta)
+		when "Red"
+			card.name.colorize(:red)
+		when "Green"
+			card.name.colorize(:green)
+		when "Multicolor"
+			card.name.colorize(:yellow)
+		else
+			card.name.colorize(:light_black)
+		end
 	end
 
 	def load_card(input)
 		chosen_card = Card.all[input - 1]
 		puts "#{chosen_card.name} - #{colorize_cost(chosen_card.cost)}"
 		puts ""
-		puts "#{chosen_card.card_type}"
-		puts "#{chosen_card.rarity}"
+		puts "Type: #{chosen_card.card_type}"
+		puts "Rarity: #{chosen_card.rarity}"
 		puts ""
-		puts "#{chosen_card.rules_text}"
-		puts "#{chosen_card.flavor_text}\n"
-		puts "#{chosen_card.combat_stats}\n" unless chosen_card.combat_stats.nil?
+		puts "#{colorize_cost(chosen_card.rules_text)}"
+		puts "#{chosen_card.flavor_text}"
+		puts "#{chosen_card.combat_stats}" unless chosen_card.combat_stats.nil?
 		puts ""
 		puts "Appears in the following set(s): #{chosen_card.sets.join(', ')}" 
 		puts ""
 		puts "Average price: #{chosen_card.price}" unless chosen_card.price.nil? 
-		puts "Purchase at #{chosen_card.purchase_url}\n"
+		puts "Purchase at #{chosen_card.purchase_url}"
+		puts ""
 
 		# CARD_ATTRIBUTES.each do |attr, value|
 		# 	puts chosen_card.send("#{attr}")
