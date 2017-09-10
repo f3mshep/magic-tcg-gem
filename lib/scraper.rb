@@ -79,6 +79,7 @@ class Scraper
     card_hash[:combat_stats] = card_profile.css('div.card-text-stats').text.strip
     card_hash[:card_text] = card_profile.css('div.card-text-oracle').text.strip
     card_hash[:flavor_text] = card_profile.css('div.card-text-flavor').text.strip
+    card_hash.delete_if {|key, value| value == ""}
     card_hash
   end
 
