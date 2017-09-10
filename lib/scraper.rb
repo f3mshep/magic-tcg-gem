@@ -28,8 +28,8 @@ class Scraper
   			card_hash[:name] = card.css('img.card').attr('alt').text
   			card_hash[:url] = "https://scryfall.com" + card['href']
   			card_collection << card_hash
-        card_collection
   		end
+      card_collection
   	end
   	### do this instead
 
@@ -54,28 +54,12 @@ class Scraper
       end
     end
 
-    binding.pry
 
     if matches > 1
       "Multicolor"
     else
       color_identity
     end
-    #still need multicolor cards to work
-    # case 
-    # when cost.include?('{W}')
-    #   "White"
-    # when cost.include?('{U}')
-    #   "Blue"
-    # when cost.include?('{B}')
-    #   "Black"
-    # when cost.include?('{R}')
-    #   "Red"
-    # when cost.include?('{G}')
-    #   "Green"
-    # else
-    #   "Colorless"
-    # end
   end
 
 ## output.match(/^.*(?=(\n))/)
@@ -83,7 +67,7 @@ class Scraper
   def scrape_card_page(profile_url)
     card_hash = {}
     card_profile = Nokogiri::HTML(open(profile_url))
-    title_text = card_profile.css('h1.card-text-title').text.strip.gsub(/\n/, ',').split(",")
+    title_text = card_profile.css('h1.card-text-title').text.strip.gsub(/\n/, '||').split("||")
     card_hash[:name] = title_text.first
     card_hash[:cost] = title_text[1].gsub(/\s/,"")
     card_hash[:rarity] = card_profile.css('span.prints-current-set-details').text.strip.split(', ')[1]
@@ -96,7 +80,6 @@ class Scraper
     card_hash[:card_text] = card_profile.css('div.card-text-oracle').text.strip
     card_hash[:flavor_text] = card_profile.css('div.card-text-flavor').text.strip
     card_hash
-    binding.pry
   end
 
 end
