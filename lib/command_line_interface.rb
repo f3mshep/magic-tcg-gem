@@ -23,9 +23,40 @@ class CommandLine
 
 	end
 
-	def get_input
+	def get_query
 		puts "Please enter the name of a card you want to find:"
 		gets.strip
+	end
+
+	def call_scraper(input)
+		new_search = Scraper.new(input)
+		results = new_search.scrape_search_page
+		card_arr = []
+		results.each do |card_hash|
+			card_hash.each do |key, value|
+				if key == :url
+					card_arr << new_search.scrape_card_page(value)
+				end
+			end
+		end
+		card_arr
+	end
+
+	def create_cards(card_arr)
+		Card.create_from_collection(card_arr)
+	end
+
+	def list_cards
+		counter = 1
+		Card.all.each do |attr, value|
+			if attr == :name
+				puts "#{counter}. value"
+				counter += 1
+			end
+		end
+	end
+
+	def access_list
 	end
 
 
