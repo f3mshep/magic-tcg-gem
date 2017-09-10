@@ -1,11 +1,12 @@
 class Card
 
-  attr_accessor :name, :rarity, :sets, :price, :rules_text, :flavor_text, :color, :cost, :purchase_url, :creature_stats, :combat_stats
+  attr_accessor :name, :rarity, :sets, :price, :rules_text, :flavor_text, :color, :cost, :purchase_url, :card_type, :combat_stats
 
   @@all = []
 
-  def initialize()
-
+  def initialize(attributes)
+    attributes.each {|method, trait| self.send(("#{method}="), trait)}
+    @@all << self
   end
 
   def self.all
@@ -13,15 +14,17 @@ class Card
   end
 
   def self.destroy_all
-    @@all = []
+    self.all.clear
   end
 
-  def self.create_from_collection()
-
+  def self.create_from_collection(card_arr)
+    card_arr.each do |card|
+      new_card = Card.new(card)
+    end
   end
 
-  def self.card_attributes()
-    
+  def card_attributes(card_attr)
+    card_attr.each {|method, trait| self.send(("#{method}="), trait)}
   end
 
 end

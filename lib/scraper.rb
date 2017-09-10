@@ -25,7 +25,7 @@ class Scraper
   		card_collection = []
   		cards.each do |card|
   			card_hash = {}
-  			card_hash[:name] = card.css('img.card').attr('alt').text
+  			card_hash[:name] = card.css('img.card').attr('alt').text.gsub(/\s\(...\)/, "")
   			card_hash[:url] = "https://scryfall.com" + card['href']
   			card_collection << card_hash
   		end
@@ -77,7 +77,7 @@ class Scraper
     card_hash[:purchase_url] = card_profile.css('#stores > ul > li:nth-child(1) > a').attr('href').text
     card_hash[:card_type] = card_profile.css('p.card-text-type-line').text.strip
     card_hash[:combat_stats] = card_profile.css('div.card-text-stats').text.strip
-    card_hash[:card_text] = card_profile.css('div.card-text-oracle').text.strip
+    card_hash[:rules_text] = card_profile.css('div.card-text-oracle').text.strip
     card_hash[:flavor_text] = card_profile.css('div.card-text-flavor').text.strip
     card_hash.delete_if {|key, value| value == ""}
     card_hash

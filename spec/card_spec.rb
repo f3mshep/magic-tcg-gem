@@ -3,16 +3,16 @@ require "spec_helper"
 describe "Card" do 
 
   let!(:card_array) {[
-  {name: "Riptide Replicator", set: "Onslaught", rarity: "Rare"},
-  {name: "Scareshift", set: "Morningtide", rarity: "Rare"},
-  {name: "Sakura-Tribe Elder", set: "Champions of Kamigawa", rarity: "Common"}
+  {name: "Riptide Replicator", sets: "Onslaught", rarity: "Rare"},
+  {name: "Scareshift", sets: "Morningtide", rarity: "Rare"},
+  {name: "Sakura-Tribe Elder", sets: "Champions of Kamigawa", rarity: "Common"}
   ]}
 
-  let!(:card_info) {[
-  {price: "$.99", rules_text: "reveal cards from the top of your library until you reveal an artifact card. Put that card onto the battlefield and the rest on the bottom of your library in a random order. Madcap Experiment deals damage to you equal to the number of cards revealed this way."}
-  ]}
+  let!(:card_info) {
+  {price: "$.99", rules_text: "Reveal cards from the top of your library until you reveal an artifact card. Put that card onto the battlefield and the rest on the bottom of your library in a random order. Madcap Experiment deals damage to you equal to the number of cards revealed this way."}
+  }
 
-  let!(:sample_card) {Card.new({name:"Madcap Experiment", set:"Kaladesh", rarity:"Mythic"})}
+  let!(:sample_card) {Card.new({name:"Madcap Experiment", sets:"Kaladesh", rarity:"Mythic"})}
 
    after(:each) do
     Card.destroy_all
@@ -33,11 +33,11 @@ describe "Card" do
   end
 
   describe "#sets" do 
-    it "Gets and sets the set attribute" do
-      Card.instance_methods.include? :set
-      Card.instance_methods.include? :set=
+    it "Gets and sets the sets the card has been printed in" do
+      Card.instance_methods.include? :sets
+      Card.instance_methods.include? :sets=
     end
-    it "Returns an array of all sets the card is in"
+    
   end 
 
   describe "#price" do
@@ -57,19 +57,21 @@ describe "Card" do
 
   describe "#new" do
     it "Takes in a hash as an argument and sets the card's attributes to their corresponding key/value pairs" do
-      expect{Card.new({name: "Merfolk Looter", set: "M12", rarity: "Common"})}.to_not raise_error
+      expect{Card.new({name: "Merfolk Looter", sets: "M12", rarity: "Common"})}.to_not raise_error
       expect(sample_card.name).to eq("Madcap Experiment")
     end
 
     it "Adds the new card to the class's @@all array" do
-      card = Card.new
-      expect(Card.all).to include("card")
+      Card.destroy_all
+      card = Card.new(name: "Kiki-Longstock")
+      expect(Card.class_variable_get(:@@all).first.name).to eq("Kiki-Longstock")
     end
 
   end
 
   describe ".destroy_all" do
     it "clears @@all" do
+      Card.destroy_all
       expect(Card.all).to match_array([])
     end
   end 
@@ -86,7 +88,7 @@ describe "Card" do
       Card.class_variable_set(:@@all, [])
       Card.create_from_collection(card_array)
       expect(Card.class_variable_get(:@@all).first.name).to eq("Riptide Replicator")
-      expect(Card.class_variable_get(:@@all).first.set).to eq("Onslaught")
+      expect(Card.class_variable_get(:@@all).first.sets).to eq("Onslaught")
     end
   end
 
