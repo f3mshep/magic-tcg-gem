@@ -5,7 +5,9 @@ require 'colorize'
 
 class CommandLine
 
-	def place_logo
+	CARD_ATTRIBUTES = [:name, :rarity, :sets, :price, :rules_text, :flavor_text, :color, :cost, :purchase_url, :card_type, :combat_stats]
+
+	def start_screen
 
 		puts "		                _            _____ _              ___      _   _               _             ".colorize.(:light_green)
 		puts "  /\\/\\   __ _  __ _(_) ___   _  /__   \\ |__   ___    / _ \\__ _| |_| |__   ___ _ __(_)_ __   __ _ ".colorize.(:light_green)
@@ -21,6 +23,7 @@ class CommandLine
 	  
 	  puts ""                             
 
+	  	run
 	end
 
 	def get_query
@@ -57,6 +60,34 @@ class CommandLine
 	end
 
 	def access_list
+		puts "Please make a selection"
+		input = gets.strip.to_i - 1
+		if input < 0 || input > Card.all.size
+			puts "Invalid selection"
+			access_list
+		end
+		input
+	end
+
+	def load_card(input)
+		chosen_card = Card.all[input]
+		CARD_ATTRIBUTES.each do |attr, value|
+			puts chosen_card.send("#{attr}")
+		end
+	end
+
+	def run
+		Card.destroy_all
+		query = get_query
+		card_arr = call_scraper(input)
+		create_cards(card_arr)
+		list_cards
+		input = access_list
+		load_card(input)
+		puts "Would you like to view another card? Y/N"
+		input = gets.strip.downcase
+		run if input == "y"
+		exit
 	end
 
 
