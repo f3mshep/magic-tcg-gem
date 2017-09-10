@@ -9,17 +9,17 @@ class CommandLine
 
 	def start_screen
 
-		puts "		                _            _____ _              ___      _   _               _             ".colorize.(:light_green)
-		puts "  /\\/\\   __ _  __ _(_) ___   _  /__   \\ |__   ___    / _ \\__ _| |_| |__   ___ _ __(_)_ __   __ _ ".colorize.(:light_green)
-		puts " /    \\ / _` |/ _` | |/ __| (_)   / /\\/ '_ \\ / _ \\  / /_\\/ _` | __| '_ \\ / _ \\ '__| | '_ \\ / _` |".colorize.(:light_green)
-		puts "/ /\\/\\ \\ (_| | (_| | | (__   _   / /  | | | |  __/ / /_\\\\ (_| | |_| | | |  __/ |  | | | | | (_| |".colorize.(:light_green)
-		puts "\\/    \\/\\__,_|\\__, |_|\\___| (_)  \\/   |_| |_|\\___| \\____/\\__,_|\\__|_| |_|\\___|_|  |_|_| |_|\\__, |".colorize.(:light_green)
-		puts "              |___/                                                                        |___/ ".colorize.(:light_green)
-		puts "                    ___              _     ___ _           _                                     ".colorize.(:light_green)
-		puts "                   / __\\__ _ _ __ __| |   / __(_)_ __   __| | ___ _ __                           ".colorize.(:light_green)
-		puts "                  / /  / _` | '__/ _` |  / _\\ | | '_ \\ / _` |/ _ \\ '__|                          ".colorize.(:light_green)
-		puts "                 / /__| (_| | | | (_| | / /   | | | | | (_| |  __/ |                             ".colorize.(:light_green)
-		puts "                 \\____/\\__,_|_|  \\__,_| \\/    |_|_| |_|\\__,_|\\___|_|                             ".colorize.(:light_green)
+		puts "		    _            _____ _              ___      _   _               _             ".colorize(:light_green)
+		puts "  /\\/\\   __ _  __ _(_) ___   _  /__   \\ |__   ___    / _ \\__ _| |_| |__   ___ _ __(_)_ __   __ _ ".colorize(:light_green)
+		puts " /    \\ / _` |/ _` | |/ __| (_)   / /\\/ '_ \\ / _ \\  / /_\\/ _` | __| '_ \\ / _ \\ '__| | '_ \\ / _` |".colorize(:light_green)
+		puts "/ /\\/\\ \\ (_| | (_| | | (__   _   / /  | | | |  __/ / /_\\\\ (_| | |_| | | |  __/ |  | | | | | (_| |".colorize(:light_green)
+		puts "\\/    \\/\\__,_|\\__, |_|\\___| (_)  \\/   |_| |_|\\___| \\____/\\__,_|\\__|_| |_|\\___|_|  |_|_| |_|\\__, |".colorize(:light_green)
+		puts "              |___/                                                                        |___/ ".colorize(:light_green)
+		puts "                    ___              _     ___ _           _                                     ".colorize(:light_green)
+		puts "                   / __\\__ _ _ __ __| |   / __(_)_ __   __| | ___ _ __                           ".colorize(:light_green)
+		puts "                  / /  / _` | '__/ _` |  / _\\ | | '_ \\ / _` |/ _ \\ '__|                          ".colorize(:light_green)
+		puts "                 / /__| (_| | | | (_| | / /   | | | | | (_| |  __/ |                             ".colorize(:light_green)
+		puts "                 \\____/\\__,_|_|  \\__,_| \\/    |_|_| |_|\\__,_|\\___|_|                             ".colorize(:light_green)
 	  
 	  puts ""                             
 
@@ -50,12 +50,8 @@ class CommandLine
 	end
 
 	def list_cards
-		counter = 1
-		Card.all.each do |attr, value|
-			if attr == :name
-				puts "#{counter}. value"
-				counter += 1
-			end
+		Card.all.each_with_index do |card, index|
+			puts "#{index + 1}.#{card.name}" 
 		end
 	end
 
@@ -79,7 +75,7 @@ class CommandLine
 	def run
 		Card.destroy_all
 		query = get_query
-		card_arr = call_scraper(input)
+		card_arr = call_scraper(query)
 		create_cards(card_arr)
 		list_cards
 		input = access_list
