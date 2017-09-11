@@ -1,11 +1,11 @@
 class Card
 
-  attr_accessor :name, :rarity, :sets, :price, :rules_text, :flavor_text, :color, :cost, :purchase_url, :card_type, :combat_stats
+  attr_accessor :name, :rarity, :sets, :price, :rules_text, :flavor_text, :color, :cost, :purchase_url, :card_type, :combat_stats, :url
 
   @@all = []
 
   def initialize(attributes)
-    attributes.each {|method, trait| self.send(("#{method}="), trait)}
+    attributes.each {|attribute, value| self.send(("#{attribute}="), value)}
     @@all << self
   end
 

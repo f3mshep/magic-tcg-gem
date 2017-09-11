@@ -12,22 +12,19 @@ class Scraper
   	@query = query
   end
 
-  def scrape_search_page
-  	url =  self.input_parser
+  def scrape_search_page(url = nil)
+  	url =  self.input_parser if url.nil?
     begin 
   	 card_index = Nokogiri::HTML(open(url))
     rescue
       puts "No cards found"
       return []
     end
- 
-  	### if the following selctor returns a blank array 
+
   	cards = card_index.css('a.card-grid-item')
   	if cards.empty?
   		[{name: 'placeholder', url: url}]
   	else
-  		###card url = card.css(card['href'])
-  		###card name =  card.css('img.card').attr('alt').text
   		card_collection = []
   		cards.each do |card|
   			card_hash = {}
@@ -35,9 +32,9 @@ class Scraper
   			card_hash[:url] = "https://scryfall.com" + card['href']
   			card_collection << card_hash
   		end
+      if 
       card_collection
   	end
-  	### do this instead
 
   end
 
@@ -47,7 +44,7 @@ class Scraper
   	SEARCH_URL + input
   end
 
-  def color_finder(cost)
+  def self.color_finder(cost)
     colors = {'{W}' =>'White','{U}' => 'Blue','{B}' => 'Black','{R}' => 'Red','{G}' => 'Green'}
     matches = 0
     color_identity = "Colorless"
@@ -70,7 +67,7 @@ class Scraper
   end
 
 
-  def scrape_card_page(profile_url)
+  def self.scrape_card_page(profile_url)
     card_hash = {}
     card_profile = Nokogiri::HTML(open(profile_url))
     title_text = card_profile.css('h1.card-text-title').text.strip.gsub(/\n/, '||').split("||")
@@ -80,7 +77,7 @@ class Scraper
     card_hash[:rarity] = card_profile.css('span.prints-current-set-details').text.strip.split(', ')[1]
     card_hash[:sets] = card_profile.css('tbody tr').collect {|element|element.css('td').text.strip[/^.*(?=(\n))/]}.delete_if{|element|element.nil?}
     card_hash[:price] = card_profile.css('span.price.currency-usd').text.split('$')[1]
-    card_hash[:color] = color_finder(card_hash[:cost])
+    card_hash[:color] = self.color_finder(card_hash[:cost])
     card_hash[:purchase_url] = card_profile.css('#stores > ul > li:nth-child(1) > a').attr('href').text
     card_hash[:card_type] = card_profile.css('p.card-text-type-line').text.strip
     card_hash[:combat_stats] = card_profile.css('div.card-text-stats').text.strip
