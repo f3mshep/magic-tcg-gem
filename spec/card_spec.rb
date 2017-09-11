@@ -92,6 +92,14 @@ describe "Card" do
     end
   end
 
+    describe "#add_card_attributes" do
+     it "Adds attributes to an instance of the card class" do
+       sample_card.add_card_attributes(card_info)
+       expect(sample_card.price).to eq("$.99")
+       expect(sample_card.rules_text).to eq("Reveal cards from the top of your library until you reveal an artifact card. Put that card onto the battlefield and the rest on the bottom of your library in a random order. Madcap Experiment deals damage to you equal to the number of cards revealed this way.")
+     end
+   end
+
 end
 
 

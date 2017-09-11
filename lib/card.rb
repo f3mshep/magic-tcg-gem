@@ -23,8 +23,8 @@ class Card
     end
   end
 
-  def add_card_attribute(attribute_hash)
-    attribute_hash.each do {|attribute, value| self.send(("#{attribute}="), value)}
+  def add_card_attributes(attribute_hash)
+    attribute_hash.each {|attribute, value| self.send(("#{attribute}="), value)}
   end
 
 end

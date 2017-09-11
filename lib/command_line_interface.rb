@@ -44,7 +44,7 @@ class CommandLine
 
 	def load_attributes(card)
 		card_hash = scrape_card_page(card[:url])
-		add_card_attribute(card_hash)
+		add_card_attributes(card_hash)
 	end
 
 	def create_cards(card_arr)
@@ -54,7 +54,7 @@ class CommandLine
 	def list_cards
 		clear_screen
 		Card.all.each_with_index do |card, index|
-			puts "#{index + 1}.#{colorize_name(card)}" 
+			puts "#{index + 1}.#{card}" 
 		end
 	end
 
@@ -82,6 +82,7 @@ class CommandLine
 
 	def load_card(input)
 		chosen_card = Card.all[input - 1]
+		load_attributes(chosen_card)
 		puts "#{chosen_card.name} - #{colorize_cost(chosen_card.cost)}"
 		puts ""
 		puts "Type: #{chosen_card.card_type}"
