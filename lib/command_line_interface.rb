@@ -39,14 +39,12 @@ class CommandLine
 		new_search = Scraper.new(input)
 		results = new_search.scrape_search_page
 		return card_arr if results == []
-		results.each do |card_hash|
-			card_hash.each do |key, value|
-				if key == :url
-					card_arr << new_search.scrape_card_page(value)
-				end
-			end
-		end
 		card_arr
+	end
+
+	def load_attributes(card)
+		card_hash = scrape_card_page(card[:url])
+		add_card_attribute(card_hash)
 	end
 
 	def create_cards(card_arr)
@@ -80,27 +78,6 @@ class CommandLine
 		cost = cost.gsub(/\{G\}/) { |match| match.colorize(:green) }
 		cost = cost.gsub(/\{T\}/) { |match| match.colorize(:light_black) }
 		cost = cost.gsub(/\{\d\}/) { |match| match.colorize(:light_black) }
-	end
-
-	def colorize_name(card)
-		color = card.color
-
-		case color
-		when "White"
-			card.name.colorize(:light_yellow)
-		when "Blue"
-			card.name.colorize(:light_cyan)
-		when "Black"
-			card.name.colorize(:magenta)
-		when "Red"
-			card.name.colorize(:red)
-		when "Green"
-			card.name.colorize(:green)
-		when "Multicolor"
-			card.name.colorize(:yellow)
-		else
-			card.name.colorize(:light_black)
-		end
 	end
 
 	def load_card(input)
