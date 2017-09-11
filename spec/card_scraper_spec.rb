@@ -32,14 +32,14 @@ describe "Scraper" do
     
   end
 
-  describe "#scrape_card_page" do
+  describe ".scrape_card_page" do
     it "accepts the URL of a card page as a parameter" do
       card = Scraper.new("Merfolk Looter")
-      expect{card.scrape_card_page("https://scryfall.com/card/cn2/114")}.to_not raise_error
+      expect{Scraper.scrape_card_page("https://scryfall.com/card/cn2/114")}.to_not raise_error
     end
     it "is a method that scrapes the card page from TCG player and returns a hash with the rules, flavor text, cost,  ect." do
       card = Scraper.new("Merfolk Looter")
-      (card.scrape_card_page("https://scryfall.com/card/cn2/114")).should include(rules_text: "{T}: Draw a card, then discard a card.", name: "Merfolk Looter", color: "Blue")
+      (Scraper.scrape_card_page("https://scryfall.com/card/cn2/114")).should include(rules_text: "{T}: Draw a card, then discard a card.", name: "Merfolk Looter", color: "Blue")
     end
   end
 

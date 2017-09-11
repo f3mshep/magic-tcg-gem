@@ -5,6 +5,7 @@ require 'pry'
 class Scraper
 
   SEARCH_URL = "https://scryfall.com/search?q="
+  SITE_URL = "https://scryfall.com"
 
   attr_accessor :query
 
@@ -29,11 +30,18 @@ class Scraper
   		cards.each do |card|
   			card_hash = {}
   			card_hash[:name] = card.css('img.card').attr('alt').text.gsub(/\s\(...\)/, "")
-  			card_hash[:url] = "https://scryfall.com" + card['href']
+  			card_hash[:url] = SITE_URL + card['href']
   			card_collection << card_hash
   		end
-      if 
-      card_collection
+      if card_index.css("a.button-primary.js-paginate-forward").any?
+        #looks for more pages
+        new_url = SITE_URL + card_index.css("a.button-primary.js-paginate-forward").attr('href').text
+        card_collection << scrape_search_page(new_url)
+        #Recurses if it finds more pages
+        card_collection.flatten
+      else
+        card_collection
+      end
   	end
 
   end

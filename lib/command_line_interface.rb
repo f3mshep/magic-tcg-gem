@@ -119,11 +119,18 @@ class CommandLine
 	end
 
 	def card_menu
-		list_cards
-		input = access_list
-		clear_screen
-		load_card(input)
-		interaction
+		if Card.all.size == 1
+			clear_screen
+			load_card(1)
+			interaction
+		else
+			list_cards
+			input = access_list
+			clear_screen
+			load_card(input)
+			interaction
+		end
+
 	end
 
 	def interaction
